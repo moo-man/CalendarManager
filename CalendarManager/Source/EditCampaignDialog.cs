@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace CalendarManager
 {
+    /// <summary>
+    /// OBSOLETE, use NewCampaignDialog and pass a campaign into the constructor to edit
+    /// </summary>
     public partial class EditCampaignDialog : Form
     {
         Calendar currentCalendar;

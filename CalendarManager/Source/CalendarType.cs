@@ -923,49 +923,6 @@ namespace CalendarManager
         public int daysTo(int toMonth, int toDay, int toYear)
         {
             return daysBetween(month, day, year, toMonth, toDay, toYear);
-           /* int m = month;
-            int d = day;
-            int y = year;
-            int numDays = 0;
-
-            if (m != toMonth && toYear == y)
-            {
-                while (toMonth != m)
-                {
-                    numDays += numDaysInMonth[m] - d;
-                    d = 0;
-                    if (++m > numMonthsInYear)
-                    {
-                        m = 1;
-                        y++;
-                    }
-                }
-                numDays += toDay;
-            }
-            else if (m == toMonth && toYear == y && toDay > d)
-            {
-                numDays = toDay - d;
-            }
-            else if (toYear != y)
-            {
-                while (toYear - y > 2)
-                {
-                    numDays += numDaysInYear;
-                    y++;
-                }
-                while (toMonth != m || toYear != y)
-                {
-                    numDays += numDaysInMonth[m] - d;
-                    d = 0;
-                    if (++m > numMonthsInYear)
-                    {
-                        m = 1;
-                        y++;
-                    }
-                }
-                numDays += toDay;
-            }
-            return numDays;*/
         }
 
         /// <summary>
@@ -990,8 +947,9 @@ namespace CalendarManager
         /// <returns>days between the input date</returns>
         public static int daysBetween(int beginMonth, int beginDay, int beginYear, int toMonth, int toDay, int toYear)
         {
-            int numDays = 0;
+            // This is pretty gross and i don't like to think about it, neither should you
 
+            int numDays = 0; // Counter that's returned
             if (beginMonth != toMonth && toYear == beginYear)
             {
                 while (toMonth != beginMonth)

@@ -270,7 +270,7 @@ namespace CalendarManager
         public string Name
         {
             get { return name; }
-            set { name = value; }
+            set { ChangeName(value); }
         }
 
         public string CurrentDate
@@ -279,14 +279,39 @@ namespace CalendarManager
             set { setCurrentDate(value); }
         }
 
-        public void setCurrentDate(string newCurrDate)
+        public void setCurrentDate(string newDate)
         {
-            foreach (Note n in notes)
-                if (n.NoteContent == "Current Date")
-                    n.Date = newCurrDate;
-            currentDate = newCurrDate;
+            Note currOrEndNote = getCurrentDateOrEndNote();
+            currOrEndNote.Date = newDate;
+            currentDate = newDate;
             sortNotes();
         }
+
+        public void ChangeName(string newName)
+        {
+            if (name == null)
+                name = newName;
+            else
+            {
+                Note endNote = getCurrentDateOrEndNote();
+                if (isEnded())
+                    endNote.NoteContent = newName + " ended.";
+                else
+                    endNote.NoteContent = "Current Date";
+
+                Note startNote = notes.Find(x => x.NoteContent == name + " began!");
+                startNote.editNoteContent(newName + " began!");
+
+                name = newName;
+            }
+        }
+
+        public void setStartDate(string newStartDate)
+        {
+            Note startNote = notes.Find(x => x.NoteContent == name + " began!");
+            startNote.editDate(newStartDate);
+        }
+
 
         public void setCurrentDate(int m, int d, int y)
         {
