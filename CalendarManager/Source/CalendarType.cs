@@ -769,8 +769,6 @@ namespace CalendarManager
             return testMonth;
         }
 
-        //TODO: Prevent days and months from being above 2 digits, and year from being above 4
-
         /// <summary>
         /// Returns a valid day value, depending on what year and month
         /// </summary>
@@ -914,7 +912,6 @@ namespace CalendarManager
 
         /// <summary>
         /// returns the amount of days between current date and input date
-        /// TODO: Make this not disgusting
         /// </summary>
         /// <param name="toMonth"></param>
         /// <param name="toDay"></param>

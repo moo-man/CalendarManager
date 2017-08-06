@@ -497,11 +497,6 @@ namespace CalendarManager
             set {importance = value; }
         }
 
-        public void editDate(int d, int m, int y)
-        {
-            // TODO: fix this
-        }
-
         public bool isGeneral()
         {
             if (Campaign == null)
