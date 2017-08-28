@@ -109,14 +109,14 @@ namespace CalendarManager
 
         public List<Campaign> CampaignList
         {
-            get {return campaignList; }
+            get { return campaignList; }
         }
 
         public void setActiveCampaign(int index)
         {
             setActiveCampaign(campaignList[index]);
         }
-        
+
         public void setActiveCampaign(Campaign c)
         {
             if (campaignList.Contains(c))
@@ -137,21 +137,135 @@ namespace CalendarManager
                 return;
             calendar.setDate(activeCampaign.CurrentDate);
         }
-
-        public void advanceDay()
+        #region Forward in time
+        /// <summary>
+        /// Move to the next day in the calendar
+        /// </summary>
+        public List<Tuple<Note, string>> addDay()
         {
+            calendar.addDay();
+
+            List<Tuple<Note, string>> notesAndDate = new List<Tuple<Note, string>>();
+
+            List<Note> notesOnThisDay = findNotesToList();
+            foreach (Note n in notesOnThisDay)
+            {
+                notesAndDate.Add(new Tuple<Note, string>(n, this.calendar.ToString()));
+            }
+
+            return notesAndDate;
         }
 
-        public void advanceTenday()
+        /// <summary>
+        /// Move to the next n days in the calendar
+        /// </summary>
+        /// <param name="num">The number of days passing</param>
+        public List<Tuple<Note, string>> addDay(int num)
         {
+            List<Tuple<Note, string>> notesAndDate = new List<Tuple<Note, string>>();
+            for (int i = 0; i < num; i++)
+            {
+                notesAndDate.AddRange(addDay());
+            }
+            return notesAndDate;
         }
 
-        public void advanceMonth()
+        public List<Tuple<Note, string>> addWeek()
         {
+            return addDay(10);
         }
 
-        public void advance()
+        public List<Tuple<Note, string>> addMonth()
         {
+            return addDay(30);
+        }
+
+        public List<Tuple<Note, string>> addMonth(int num)
+        {
+            List<Tuple<Note, string>> notesAndDate = new List<Tuple<Note, string>>();
+            for (int i = 0; i < num; i++)
+                notesAndDate.AddRange(addMonth());
+            return notesAndDate;
+        }
+
+        public void addYear()
+        {
+            calendar.addYear();
+        }
+
+        public void addYear(int num)
+        {
+            for (int i = 0; i < num; i++)
+                addYear();
+        }
+        #endregion
+
+        #region Backward in time
+        public void subDay()
+        {
+            calendar.subDay();
+
+        }
+
+        public void subDay(int num)
+        {
+            for (int i = 0; i < num; i++)
+                subDay();
+        }
+
+        public void subTenday()
+        {
+            subDay(10);
+        }
+
+        public void subMonth()
+        {
+            subDay(30);
+        }
+
+        public void subYear()
+        {
+            calendar.subYear();
+        }
+        #endregion
+
+
+        /// <summary>
+        /// Finds all notes that should be listed based on the current date of the calendar
+        /// </summary>
+        /// <returns></returns>
+        public List<Note> findNotesToList()
+        {
+            List<Note> listOfNotes = new List<Note>();
+
+            foreach (Note n in GeneralNoteList)
+            {
+                if (n.Importance == AlertScope.global && calendar.isAnniversary(n.Date) || (n.Importance == AlertScope.dontAlert && calendar.sameDate(n.Date)))
+                    listOfNotes.Add(n);
+            }
+
+            foreach (Campaign c in CampaignList)
+            {
+                foreach (Note n in c.notes)
+                {
+                    if (c.Equals(activeCampaign)) // If the note belongs to current campaign, and has appropriate visibilty, and is anniversary of this date
+                    {
+                        if ((n.Importance == AlertScope.campaign || n.Importance == AlertScope.global) && calendar.isAnniversary(n.Date))
+                        {
+                            if (n.NoteContent.Equals("Current Date") == false) // don't print the current date of current campaign, as that is always the current date
+                                listOfNotes.Add(n);
+                        }
+                        else if (n.Importance == AlertScope.dontAlert && calendar.sameDate(n.Date))
+                            listOfNotes.Add(n);
+                    }
+
+                    else // If the note does not belong in the current campaign
+                        if ((n.Importance == AlertScope.global) && calendar.isAnniversary(n.Date)) // if the note happened on this day and is of                                                                                        // sufficient importance level
+                        listOfNotes.Add(n);
+                } // end foreach note
+            } // end foreach campaign
+
+            return listOfNotes;
         }
 
         public Note findNote(string content, noteType type)
@@ -410,7 +524,7 @@ namespace CalendarManager
 
         public void sortNotes()
         {
-            notes.Sort(delegate(Note x, Note y)
+            notes.Sort(delegate (Note x, Note y)
             {
                 return Note.compareNotes(x, y);
             });
@@ -467,10 +581,10 @@ namespace CalendarManager
 
         public string Date
         {
-            get {return date;}
-            set {editDate(value); }
+            get { return date; }
+            set { editDate(value); }
         }
-        
+
         public string NoteContent
         {
             get { return noteContent; }
@@ -479,8 +593,8 @@ namespace CalendarManager
 
         public Campaign Campaign
         {
-            get {return campaign; }
-            set {campaign = value; }
+            get { return campaign; }
+            set { campaign = value; }
         }
 
         public void editDate(string newDate)
@@ -493,8 +607,8 @@ namespace CalendarManager
 
         public AlertScope Importance
         {
-            get {return importance; }
-            set {importance = value; }
+            get { return importance; }
+            set { importance = value; }
         }
 
         public bool isGeneral()
