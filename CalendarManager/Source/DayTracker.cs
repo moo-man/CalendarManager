@@ -257,6 +257,7 @@ namespace CalendarManager
         {
             currentCalendar.calendar.addDay();
             UpdateCalendar();
+            Utility.AutoSave(currentCalendar);
         }
 
         private void subDayButton_Click(object sender, EventArgs e)
@@ -269,6 +270,7 @@ namespace CalendarManager
         {
             currentCalendar.calendar.addWeek();
             UpdateCalendar();
+            Utility.AutoSave(currentCalendar);
         }
 
         private void subWeek_Click(object sender, EventArgs e)
@@ -281,6 +283,7 @@ namespace CalendarManager
         {
             currentCalendar.calendar.addMonth();
             UpdateCalendar();
+            Utility.AutoSave(currentCalendar);
         }
 
         private void subMonth_Click(object sender, EventArgs e)
@@ -293,6 +296,7 @@ namespace CalendarManager
         {
             currentCalendar.calendar.addYear();
             UpdateCalendar();
+            Utility.AutoSave(currentCalendar);
         }
 
         private void subYear_Click(object sender, EventArgs e)
@@ -630,7 +634,10 @@ namespace CalendarManager
 
         private void DayTracker_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Control && e.KeyCode == Keys.S)
+            if (e.Control && e.Shift && e.KeyCode == Keys.S)
+                saveAsToolStripMenuItem_Click(sender, e);
+
+            else if (e.Control && e.KeyCode == Keys.S)
                 save_Click(sender, e);
 
             if (e.Control && e.KeyCode == Keys.N)
@@ -649,6 +656,11 @@ namespace CalendarManager
         private void save_Click(object sender, EventArgs e)
         {
             Utility.Save(currentCalendar);
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.SaveAs(currentCalendar);
         }
     }
 }

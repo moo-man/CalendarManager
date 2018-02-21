@@ -157,7 +157,7 @@ namespace CalendarManager
                 else if (result == DialogResult.Cancel)
                     e.Cancel = true;
             }
-
+            Utility.Clear(); // Ensure old file path is cleared
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -179,8 +179,15 @@ namespace CalendarManager
 
         private void CalendarMenu_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Control && e.Shift && e.KeyCode == Keys.S)
+                saveAsToolStripMenuItem_Click(sender, e);
             if (e.Control && e.KeyCode == Keys.S)
                 saveButton_Click(sender, e);
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Utility.SaveAs(currentCalendar);
         }
     }
 }

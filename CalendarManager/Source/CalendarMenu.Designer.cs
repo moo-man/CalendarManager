@@ -44,6 +44,7 @@
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calendarMenuToolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -114,6 +115,7 @@
             this.filebutton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.filebutton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.saveToolStripMenuItem,
+            this.saveAsToolStripMenuItem,
             this.loadToolStripMenuItem,
             this.exitToolStripMenuItem1});
             this.filebutton.Image = ((System.Drawing.Image)(resources.GetObject("filebutton.Image")));
@@ -127,23 +129,31 @@
             this.saveToolStripMenuItem.Image = global::CalendarManager.Properties.Resources.save_icon_5404;
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeyDisplayString = "Crtl + S";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(144, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(144, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(207, 22);
             this.exitToolStripMenuItem1.Text = "Exit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.ShortcutKeyDisplayString = "Crtl + Shift + S";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // CalendarMenu
             // 
@@ -188,5 +198,6 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
     }
 }
