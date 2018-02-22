@@ -10,37 +10,83 @@ namespace CalendarManager
 {
     static class Utility
     {
+
+        static string currentFilePath = null;
+
+        public static void Clear()
+        {
+            currentFilePath = null;
+        }
+
+        public static void SaveAs(Calendar calendarToSave)
+        {
+            string temp = currentFilePath;
+            currentFilePath = null;
+            Save(calendarToSave);
+
+            if (currentFilePath == null)
+                currentFilePath = temp;
+        }
+
+        public static void AutoSave(Calendar calendarToSave)
+        {
+            if (currentFilePath == null)
+                return;
+            else
+                Save(calendarToSave);
+        }
+
         public static void Save(Calendar calendarToSave)
         {
           
             System.IO.Stream outStream;
             System.IO.StreamWriter writer = null;
-            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
-            saveFileDialog1.Filter = "cal files (*.cal)|*.cal|All files (*.*)|*.*";
-            saveFileDialog1.DefaultExt = "cal";
-            saveFileDialog1.InitialDirectory = Application.StartupPath;
-            saveFileDialog1.FilterIndex = 0;
-            saveFileDialog1.RestoreDirectory = true;
 
-            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            if (currentFilePath == null || currentFilePath == "") // if new file, open a dialog box
+            {
+                SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+                saveFileDialog1.Filter = "cal files (*.cal)|*.cal|All files (*.*)|*.*";
+                saveFileDialog1.DefaultExt = "cal";
+                saveFileDialog1.InitialDirectory = Application.StartupPath;
+                saveFileDialog1.FilterIndex = 0;
+                saveFileDialog1.RestoreDirectory = true;
+
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        if ((outStream = saveFileDialog1.OpenFile()) != null)
+                        {
+                            writer = new System.IO.StreamWriter(outStream);
+                            currentFilePath = saveFileDialog1.FileName;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+                else
+                    return;
+            }
+
+
+            else // save with no dialog
             {
                 try
                 {
-                    if ((outStream = saveFileDialog1.OpenFile()) != null)
-                    {
-                        writer = new System.IO.StreamWriter(outStream);
-
-                    }
+                    writer = new System.IO.StreamWriter(currentFilePath);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    MessageBox.Show("Error: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
+                    MessageBox.Show("Error saving. Use Save As..");
+                    currentFilePath = null;
                 }
-            }
-            else
-                return;
 
+            }
+
+            // Prevents serializing nested objects forever
             JsonSerializerSettings settings = new Newtonsoft.Json.JsonSerializerSettings()
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
@@ -48,6 +94,8 @@ namespace CalendarManager
             };
 
             writer.WriteLine(JsonConvert.SerializeObject(calendarToSave, settings));
+
+            #region OLD FILE FORMAT
             /*
             //Write calendartype data
             calendarToSave.calendar.saveData(writer);
@@ -90,6 +138,8 @@ namespace CalendarManager
                     }
                 }
             }*/
+            #endregion
+
             writer.Close();
         }
 
@@ -111,6 +161,8 @@ namespace CalendarManager
                     string test = sr.ReadToEnd();
                     //loadedCalendar = ReadInFile(sr);
                     loadedCalendar = readInJSON(Newtonsoft.Json.JsonConvert.DeserializeObject(test));
+
+                    currentFilePath = openFileDialog1.FileName;
                     sr.Close();
                 }
                 catch (Exception ex)
@@ -134,6 +186,7 @@ namespace CalendarManager
             }
         }
 
+        #region OLD FILE FORMAT
         public static Calendar ReadInFile(System.IO.StreamReader sr)
         {
             CalendarType calendarType = new CalendarType(sr);
@@ -200,5 +253,6 @@ namespace CalendarManager
 
             return new Note(noteDate, importance, content);
         }
+        #endregion
     }
 }

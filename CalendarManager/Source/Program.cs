@@ -31,5 +31,5 @@ namespace CalendarManager
             }
         }
     }
-    // TODO: add alerts for events skipped when advancing by tendays, months, etc
+    // creating branch
 }
