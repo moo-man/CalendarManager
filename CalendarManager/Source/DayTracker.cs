@@ -182,17 +182,16 @@ namespace CalendarManager
                             else
                                 noteBox.Items.Add("(TIMER) " + t.message + " (in " + currentCalendar.calendar.daysTo(t.returnDateString()) + " days)");
                         }
-                    }
-                    else
-                    {
-                        if (numDays > 1)
-                            noteBox.Items.Add("(TIMER)(PAUSED) " + t.message + " (in " + currentCalendar.calendar.daysTo(t.returnDateString()) + " days)");
                         else
-                            noteBox.Items.Add("(TIMER)(PAUSED) " + t.message + " (in " + currentCalendar.calendar.daysTo(t.returnDateString()) + " days)");
+                        {
+                            if (numDays > 1)
+                                noteBox.Items.Add("(TIMER)(PAUSED) " + t.message + " (in " + currentCalendar.calendar.daysTo(t.returnDateString()) + " days)");
+                            else
+                                noteBox.Items.Add("(TIMER)(PAUSED) " + t.message + " (in " + currentCalendar.calendar.daysTo(t.returnDateString()) + " days)");
 
+                        }
                     }
                 }
-
 
             foreach (Note n in list)
             {
