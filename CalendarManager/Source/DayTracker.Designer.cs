@@ -81,6 +81,7 @@
             this.daytrackerToolStrip = new System.Windows.Forms.ToolStrip();
             this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDropDownButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.dayToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -100,7 +101,7 @@
             this.timerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripDropDownButton3 = new System.Windows.Forms.ToolStripDropDownButton();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.pauseToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noteboxRightClickMenu.SuspendLayout();
             this.daytrackerToolStrip.SuspendLayout();
             this.SuspendLayout();
@@ -468,7 +469,7 @@
             this.timersToolStripMenuItem,
             this.showHiddenTimersToolStripMenuItem});
             this.noteboxRightClickMenu.Name = "noteboxRightClickMenu";
-            this.noteboxRightClickMenu.Size = new System.Drawing.Size(185, 70);
+            this.noteboxRightClickMenu.Size = new System.Drawing.Size(185, 92);
             // 
             // notesToolStripMenuItem
             // 
@@ -508,6 +509,7 @@
             this.timersToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addToolStripMenuItem1,
             this.editToolStripMenuItem,
+            this.pauseToolStripMenuItem,
             this.deleteToolStripMenuItem,
             this.hideToolStripMenuItem});
             this.timersToolStripMenuItem.Image = global::CalendarManager.Properties.Resources.alarmicon;
@@ -519,28 +521,28 @@
             // 
             this.addToolStripMenuItem1.Name = "addToolStripMenuItem1";
             this.addToolStripMenuItem1.ShortcutKeyDisplayString = "Crtl + T";
-            this.addToolStripMenuItem1.Size = new System.Drawing.Size(143, 22);
+            this.addToolStripMenuItem1.Size = new System.Drawing.Size(156, 22);
             this.addToolStripMenuItem1.Text = "Add";
             this.addToolStripMenuItem1.Click += new System.EventHandler(this.addTimerButton_Click);
             // 
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.editToolStripMenuItem.Text = "Edit";
             this.editToolStripMenuItem.Click += new System.EventHandler(this.editTimerButton_Click);
             // 
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteButtonTimer_Click);
             // 
             // hideToolStripMenuItem
             // 
             this.hideToolStripMenuItem.Name = "hideToolStripMenuItem";
-            this.hideToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.hideToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.hideToolStripMenuItem.Text = "Hide";
             this.hideToolStripMenuItem.Click += new System.EventHandler(this.hideToolStripMenuItem_Click);
             // 
@@ -585,6 +587,14 @@
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.save_Click);
             // 
+            // saveAsToolStripMenuItem
+            // 
+            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
+            this.saveAsToolStripMenuItem.ShortcutKeyDisplayString = "Crtl + Shift + S";
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
+            this.saveAsToolStripMenuItem.Text = "Save As...";
+            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
@@ -613,7 +623,7 @@
             this.addToolStripMenuItem2,
             this.subtractToolStripMenuItem});
             this.dayToolStripMenuItem.Name = "dayToolStripMenuItem";
-            this.dayToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.dayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.dayToolStripMenuItem.Text = "Day";
             // 
             // addToolStripMenuItem2
@@ -638,7 +648,7 @@
             this.addToolStripMenuItem3,
             this.subtractToolStripMenuItem1});
             this.tendayToolStripMenuItem.Name = "tendayToolStripMenuItem";
-            this.tendayToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.tendayToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.tendayToolStripMenuItem.Text = "Week";
             // 
             // addToolStripMenuItem3
@@ -661,7 +671,7 @@
             this.addToolStripMenuItem4,
             this.subtractToolStripMenuItem2});
             this.monthToolStripMenuItem.Name = "monthToolStripMenuItem";
-            this.monthToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.monthToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.monthToolStripMenuItem.Text = "Month";
             // 
             // addToolStripMenuItem4
@@ -684,7 +694,7 @@
             this.addToolStripMenuItem5,
             this.subtractToolStripMenuItem3});
             this.yearToolStripMenuItem.Name = "yearToolStripMenuItem";
-            this.yearToolStripMenuItem.Size = new System.Drawing.Size(110, 22);
+            this.yearToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.yearToolStripMenuItem.Text = "Year";
             // 
             // addToolStripMenuItem5
@@ -707,7 +717,7 @@
             this.noteToolStripMenuItem,
             this.timerToolStripMenuItem});
             this.addToolStripMenuItem6.Name = "addToolStripMenuItem6";
-            this.addToolStripMenuItem6.Size = new System.Drawing.Size(110, 22);
+            this.addToolStripMenuItem6.Size = new System.Drawing.Size(152, 22);
             this.addToolStripMenuItem6.Text = "Add";
             // 
             // noteToolStripMenuItem
@@ -744,13 +754,12 @@
             this.aboutToolStripMenuItem.Text = "Help";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
-            // saveAsToolStripMenuItem
+            // pauseToolStripMenuItem
             // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.ShortcutKeyDisplayString = "Crtl + Shift + S";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(207, 22);
-            this.saveAsToolStripMenuItem.Text = "Save As...";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
+            this.pauseToolStripMenuItem.Name = "pauseToolStripMenuItem";
+            this.pauseToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.pauseToolStripMenuItem.Text = "Pause/Unpause";
+            this.pauseToolStripMenuItem.Click += new System.EventHandler(this.pauseToolStripMenuItem_Click);
             // 
             // DayTracker
             // 
@@ -884,6 +893,7 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton3;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem pauseToolStripMenuItem;
     }
 }
 

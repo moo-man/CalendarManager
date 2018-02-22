@@ -159,8 +159,7 @@ namespace CalendarManager
 
                 else if (result == DialogResult.Cancel)
                     e.Cancel = true;
-            }
-            Utility.Clear(); // Ensure old file path is cleared
+            };
         }
 
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
