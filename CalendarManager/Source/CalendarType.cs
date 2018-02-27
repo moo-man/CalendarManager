@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace CalendarManager
 {
-    public enum moonPhase { full, waningGib, lastQuarter, waningCresc, newMoon, waxingCrsec, firstQuarter, waxingGib };
+    public enum moonPhase {newMoon, waxingCrsec, firstQuarter, waxingGib, full, waningGib, lastQuarter, waningCresc};
     public class CalendarType
     {
 
@@ -287,39 +287,114 @@ namespace CalendarManager
             startDay = Int32.Parse(reader.ReadLine());
         }*/
 
+
+        // cycle / 8 = full moon day length (rounded to nearest)
+        // waning crescent -> full moon takes 4 days
         private void createMoonPhaseArray()
         {
             moonPhases = new List<moonPhase[]>(numOfMoons);
             moonCounters = new int[numOfMoons];
             for (int i = 0; i < numOfMoons; i++)
             {
-                moonPhase[] arrayToAdd;
-                int fullMoonLocation = 0;
-                int newMoonLocation = (moonCycle[i] - 1) / 2 + 1;
-                int lastQuarterLocation = newMoonLocation / 2 + 1;
-                int firstQuarterLocation = newMoonLocation + newMoonLocation / 2 + 1;
-                arrayToAdd = new moonPhase[moonCycle[i]];
-                arrayToAdd[fullMoonLocation] = moonPhase.full;
-                arrayToAdd[newMoonLocation] = moonPhase.newMoon;
-                arrayToAdd[firstQuarterLocation] = moonPhase.firstQuarter;
-                arrayToAdd[lastQuarterLocation] = moonPhase.lastQuarter;
+                moonPhase[] arrayToAdd = new moonPhase[moonCycle[i]]; // End result, this array holds the entire cycle of the moon
+                int arrayIndex = 0; // index for adding phases to arrayToAdd
 
-                for (int j = fullMoonLocation + 1; j < lastQuarterLocation; j++)
-                    arrayToAdd[j] = moonPhase.waningGib;
+                if (moonCycle[i] >= 8)
+                {
+                    int extraDays = moonCycle[i] % 8;                         // If 8 doesn't evenly divide the cycle, there will be extra days for some phases (there are 8 phases)
+                    bool[] phasesWithExtraDay = extraDayPlacement(extraDays); // find out which phases might have an extra day length
 
-                for (int j = lastQuarterLocation + 1; j < newMoonLocation; j++)
-                    arrayToAdd[j] = moonPhase.waningCresc;
 
-                for (int j = newMoonLocation + 1; j < firstQuarterLocation; j++)
-                    arrayToAdd[j] = moonPhase.waxingCrsec;
+                    // Outer loop indexes through each phase, inner loop allocates that phase "cycle/8" times, then adds an extra day if applicable
+                    for (int moonPhaseIndex = 0; moonPhaseIndex < 8; moonPhaseIndex++)
+                    {
+                        for (int allocater = 0; allocater < (moonCycle[i] / 8); allocater++)
+                        {
+                            arrayToAdd[arrayIndex++] = (moonPhase)moonPhaseIndex;
+                        }
+                        if (phasesWithExtraDay[moonPhaseIndex]) // add extra day
+                            arrayToAdd[arrayIndex++] = (moonPhase)moonPhaseIndex;
+                    }
+                }
+                else // cycle is less that 8, some phases won't appear
+                {
+                    bool[] usePhase = removedPhases(moonCycle[i]);
 
-                for (int j = firstQuarterLocation + 1; j < moonCycle[i]; j++)
-                    arrayToAdd[j] = moonPhase.waxingGib;
 
+                    // Outer loop indexes through each phase, inner loop allocates that phase "cycle/8" times, then adds an extra day if applicable
+                    for (int moonPhaseIndex = 0; i < 8 && usePhase[i]; i++)
+                    {
+                        arrayToAdd[arrayIndex++] = (moonPhase)moonPhaseIndex;
+                    }
+                }
                 moonPhases.Add(arrayToAdd);
             }
         }
 
+        /// <summary>
+        /// Returns which moon phases get extra days, depending on how many extra days there are
+        /// Extra days range from 0 - 7 (modulo 8, since there's 8 phases), 0 extra days = all phases same length
+        /// </summary>
+        /// <param name="extraDays"></param>
+        private bool[] extraDayPlacement(int extraDays)
+        {
+            // CHECK
+            //  moonPhase {newMoon, waxingCrsec, firstQuarter, waxingGib, full, waningGib, lastQuarter, waningCresc};
+            // Would like to do this elegantly, with simple calculation, but this is based off data from donjon, so not sure how it exactly works
+            switch (extraDays)
+            {
+                case 0:
+                    return new bool[] { false, false, false, false,  false, false, false, false};
+                case 1:
+                    return new bool[] {true, false, false, false, false, false, false, false};
+                case 2:
+                    return new bool[] {true, false, false, false, true, false, false, false };
+                case 3:
+                    return new bool[] {true, false, true, false, false, true, false, false };
+                case 4:
+                    return new bool[] { true, false, true, false, true, false, true, false };
+                case 5:
+                    return new bool[] {true, true, false, true, true, false, true, false };
+                case 6:
+                    return new bool[] {true, true, true, false, true, true, true, false };
+                case 7:
+                    return new bool[] { true, true, true, true, true, true, true, false};
+                default:
+                    return null;
+            }
+
+        }
+
+        /// <summary>
+        /// If the moon's cycle is less than 8 days, all 8 phases won't be used, this function decides which ones to use given a cycle
+        /// </summary>
+        /// <param name="moonCycle"></param>
+        /// <returns></returns>
+        private bool[] removedPhases(int moonCycle)
+        {
+            // CHECK
+            switch (moonCycle)
+            {
+                case 7:
+                    return new bool[] {true, true, true, true, true, true, true, false };
+                case 6:
+                    return new bool[] {true, true, true, false, true, true, true, false};
+                case 5:
+                    return new bool[] {false, true, true, false, true, true, false, true};
+                case 4:
+                    return new bool[] { true, false, true, false, true, false, true, false };
+                case 3:
+                    return new bool[] {true, false, true, false, false, true, false, false };
+                case 2:
+                    return new bool[] { true, false, false, false, true, false, false, false };
+                case 1:
+                    return new bool[] { true, false, false, false, false, false, false, false };
+                case 0:
+                    return null;
+                default:
+                    return new bool[] { true, true, true, true, true, true, true, true };
+            }
+        }
 
         #region forward in time
         public void addDay()
@@ -512,7 +587,7 @@ namespace CalendarManager
         {
             int daysSinceFirstDay = 0;
 
-            for (int i = 0; i < Math.Abs(year - startYear); i++)
+            for (int i = 0; i < Math.Abs(year - 1); i++)
                 daysSinceFirstDay += numDaysInYear;
 
             daysSinceFirstDay += determineDayOfYear();
