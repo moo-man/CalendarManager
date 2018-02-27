@@ -209,18 +209,17 @@ namespace CalendarManager
 
         public void subDay(int num)
         {
-            for (int i = 0; i < num; i++)
-                subDay();
+            calendar.subDay(num);
         }
 
-        public void subTenday()
+        public void subWeek()
         {
-            subDay(10);
+            calendar.subWeek();
         }
 
         public void subMonth()
         {
-            subDay(30);
+            calendar.subMonth();
         }
 
         public void subYear()
@@ -730,9 +729,6 @@ namespace CalendarManager
             string dayString = CalendarType.enforceDayFormat(monthString, day.ToString(), yearString);
             return monthString + dayString + yearString;
         }
-
-
-
     }
 
 }
