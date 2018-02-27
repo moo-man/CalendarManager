@@ -40,7 +40,7 @@ namespace CalendarManager
         [JsonProperty]
         static int[] moonShift;
         [JsonProperty]
-        static List <moonPhase[]> moonPhases;
+        static List<moonPhase[]> moonPhases;
         [JsonProperty]
         static int startYear;
         [JsonProperty]
@@ -55,6 +55,55 @@ namespace CalendarManager
         int[] moonCounters;
         #endregion
 
+        #region Accessors
+        public int CurrentMonth
+        {
+            get
+            {
+                return month;
+            }
+        }
+
+        public int CurrentDay
+        {
+            get
+            {
+                return day;
+            }
+        }
+
+        public int CurrentYear
+        {
+            get
+            {
+                return year;
+            }
+        }
+
+        public static int NumMonthsInYear
+        {
+            get
+            {
+                return numMonthsInYear;
+            }
+        }
+
+        public static int[] NumDaysInMonth
+        {
+            get
+            {
+                return numDaysInMonth;
+            }
+        }
+
+        public static int NumDaysInWeek
+        {
+            get
+            {
+                return numDaysInWeek;
+            }
+        }
+        #endregion
 
 
         public CalendarType(string json, string name)
@@ -723,9 +772,9 @@ namespace CalendarManager
         /// <param name="date1"></param>
         /// <param name="date2"></param>
         /// <returns></returns>
-        public static bool dateBetween(string testDate, string date1, string date2)
-        {
-        }
+        //public static bool dateBetween(string testDate, string date1, string date2)
+        //{
+        //}
 
         #endregion
 

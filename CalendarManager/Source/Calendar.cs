@@ -172,12 +172,12 @@ namespace CalendarManager
 
         public List<Tuple<Note, string>> addWeek()
         {
-            return addDay(10);
+            return addDay(CalendarType.NumDaysInWeek);
         }
 
         public List<Tuple<Note, string>> addMonth()
         {
-            return addDay(30);
+            return addDay(CalendarType.NumDaysInMonth[calendar.CurrentMonth]);
         }
 
         public List<Tuple<Note, string>> addMonth(int num)
