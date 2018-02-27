@@ -341,8 +341,8 @@ namespace CalendarManager
             if (year > 9999)
             {
                 year = 9999;
-                month = 16;
-                day = numDaysInMonth[16];
+                month = numMonthsInYear;
+                day = numDaysInMonth[numMonthsInYear];
                 // Kinda jank, if this if statement happens, the date doesnt change, so reverse the adddayofweek and addmoonphase
                 subDayOfWeek();
                 subMoonPhase();
@@ -799,15 +799,15 @@ namespace CalendarManager
             {
                 testDay = "01";
             }
-            if (year != "" && month != "")
+            if (month != "")
             {
-                testDay = verifyDay(month + testDay + year).ToString();
+                testDay = verifyDay(Int32.Parse(month), Int32.Parse(testDay)).ToString();
                 if (testDay.Length == 1)
                     testDay = "0" + testDay;
             }
-            else if (Int32.Parse(testDay) > numDaysInMonth[Int32.Parse(month)])
+            else
             {
-                testDay = numDaysInMonth[Int32.Parse(month)].ToString();
+                testDay = "01";
             }
 
             return testDay;
@@ -838,21 +838,21 @@ namespace CalendarManager
             return testYear;
         }
 
-        public static int verifyDay(int m, int d, int y)
+        public static int verifyDay(int m, int d)
         {
-            if (m > numDaysInYear || m < 1)
-                return d;
+            if (m > numMonthsInYear || m < 1)
+                return 1;
             if (d <= numDaysInMonth[m])
                 return d;
             else if (d <= 0)
                 return 1;
             else
-                return d;
+                return numDaysInMonth[m];
         }
 
         public static int verifyDay(string date)
         {
-            return verifyDay(Int32.Parse(date.Substring(0, 2)), Int32.Parse(date.Substring(2, 2)), Int32.Parse(date.Substring(4, 4)));
+            return verifyDay(Int32.Parse(date.Substring(0, 2)), Int32.Parse(date.Substring(2, 2)));
         }
         #endregion
 
