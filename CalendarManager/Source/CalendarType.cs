@@ -583,19 +583,21 @@ namespace CalendarManager
             return ((modResult + startDay) % (numDaysInWeek));
         }
 
+        /// <summary>
+        /// For each moon, use its cycle and shift to determine the current phase
+        /// This is calculated from the calendar's year 0 day 1 (which is what the cycle and shift are relative to)
+        /// </summary>
         public void determineMoonCounters()
         {
             int daysSinceFirstDay = 0;
 
-            for (int i = 0; i < Math.Abs(year - 1); i++)
+            for (int i = 0; i < Math.Abs(year); i++)
                 daysSinceFirstDay += numDaysInYear;
 
-            daysSinceFirstDay += determineDayOfYear();
+            daysSinceFirstDay += determineDayOfYear() - 1;
 
             for (int i = 0; i < numOfMoons; i++)
-            {
-                moonCounters[i] = (daysSinceFirstDay + moonShift[i]) % moonCycle[i];
-            }
+              moonCounters[i] = Math.Abs(daysSinceFirstDay - moonShift[i]) % moonCycle[i];
 
         }
         #endregion
