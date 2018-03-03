@@ -735,7 +735,7 @@ namespace CalendarManager
             return returnString;
         }
 
-        public static string returnGivenDate(int m, int d, int y)
+        public static string returnGivenDateWithWeekday(int m, int d, int y)
         {
             StringBuilder dateString = new StringBuilder();
             if (m > numMonthsInYear || m <= 0 || d > numDaysInMonth[m] || d <= 0)
@@ -747,24 +747,114 @@ namespace CalendarManager
             return dateString.ToString();
         }
 
-        public static string returnGivenDate(string dateString)
+        public static string returnGivenDateWithWeekday(string dateString)
         {
             if (dateString.Length == 8)
             {
-                return returnGivenDate(Int32.Parse(dateString.Substring(0, 2)), Int32.Parse(dateString.Substring(2, 2)), Int32.Parse(dateString.Substring(4, 4)));
+                return returnGivenDateWithWeekday(Int32.Parse(dateString.Substring(0, 2)), Int32.Parse(dateString.Substring(2, 2)), Int32.Parse(dateString.Substring(4, 4)));
             }
 
             else
                 return null;
         }
 
-
-        public string returnConciseDate()
+        public string returnConciseCurrentDate()
         {
-            return returnGivenDate(month, day, year);
+            string dateWithWeekday = returnGivenDateWithWeekday(month, day, year);
+            for (int i = 0; i < dateWithWeekday.Length; i++)
+            {
+                if (dateWithWeekday.ElementAt(i) == ' ')
+                    return dateWithWeekday.Substring(i + 1).Trim(',');
+            }
+            return null;
         }
 
-#endregion
+        public static string returnConciseGivenDate(int month, int day, int year)
+        {
+            string dateWithWeekday = returnGivenDateWithWeekday(month, day, year);
+                        for (int i = 0; i < dateWithWeekday.Length; i++)
+            {
+                if (dateWithWeekday.ElementAt(i) == ' ')
+                    return dateWithWeekday.Substring(i + 1).Replace(",", "");
+            }
+            return null;
+        }
+
+        public static string returnConciseGivenDate(string dateString)
+        {
+            if (dateString.Length == 8)
+            {
+                return returnConciseGivenDate(Int32.Parse(dateString.Substring(0, 2)), Int32.Parse(dateString.Substring(2, 2)), Int32.Parse(dateString.Substring(4, 4)));
+            }
+
+            else
+                return null;
+        }
+
+        public string returnCurrentDateWithWeekday()
+        {
+            return returnGivenDateWithWeekday(month, day, year);
+        }
+
+
+        /// <summary>
+        /// Reverse ReturnGivenDate.
+        /// Give (monthName) (dayNumber) (yearNumber)
+        /// Returns mmddyyyy
+        /// </summary>
+        /// <param name="date"></param>
+        /// <returns></returns>
+        public static string ReturnGivenDateFromName(string date)
+        {
+            string month = null, day = null, year = null;
+            try
+            {
+                string[] splitArray = date.Split(' ');
+
+                // If the length is not 3, that means the month name has a space in it
+                // Copy the array, extract the month name into a string builder
+                // Redo the array at size 3, assemble it as [monthName][day][year]
+                if (splitArray.Length != 3)
+                {
+                    string[] tempArray = new string[splitArray.Length];
+                    splitArray.CopyTo(tempArray, 0);
+                    StringBuilder monthName = new StringBuilder();
+                    for (int i = 0; i < splitArray.Length - 2; i++)
+                    {
+                        monthName.Append(splitArray[i] + " ");
+                    }
+
+                    splitArray = new string[3];
+                    splitArray[0] = monthName.ToString();
+                    splitArray[1] = tempArray[tempArray.Length - 2];
+                    splitArray[2] = tempArray[tempArray.Length - 1];
+
+                }
+
+                if (splitArray.Length == 3)
+                {
+
+                    for (int i = 1; i < monthNames.Length; i++)
+                    {
+                        if (splitArray[0].Equals(monthNames[i]))
+                        {
+                            month = enforceMonthFormat(i.ToString());
+                        }
+
+                    }
+
+                    year = enforceYearFormat(splitArray[2]);
+                    day = enforceDayFormat(month, splitArray[1], year);
+                }
+            }
+            catch (Exception e)
+            {
+
+            }
+            return month + day + year;
+        }
+
+        #endregion
 
 
         #region Date relation functions, sameDate, isAnniversary, yearsAgo, farthestInTime

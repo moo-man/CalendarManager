@@ -56,6 +56,7 @@
             this.activateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.expandChildrenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapseChildrenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.timeDiffButton = new System.Windows.Forms.Button();
             this.campaignContextMenu.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -67,7 +68,7 @@
             this.campaignTree.Name = "campaignTree";
             this.campaignTree.Size = new System.Drawing.Size(338, 370);
             this.campaignTree.TabIndex = 0;
-            this.campaignTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.campaignTree_MouseDown_1);
+            this.campaignTree.MouseDown += new System.Windows.Forms.MouseEventHandler(this.campaignTree_MouseDown);
             // 
             // addCampaignButton
             // 
@@ -281,11 +282,22 @@
             this.collapseChildrenToolStripMenuItem.Text = "Collapse Children";
             this.collapseChildrenToolStripMenuItem.Click += new System.EventHandler(this.collapseChildrenToolStripMenuItem_Click);
             // 
+            // timeDiffButton
+            // 
+            this.timeDiffButton.Location = new System.Drawing.Point(366, 321);
+            this.timeDiffButton.Name = "timeDiffButton";
+            this.timeDiffButton.Size = new System.Drawing.Size(64, 35);
+            this.timeDiffButton.TabIndex = 14;
+            this.timeDiffButton.Text = "Time Difference";
+            this.timeDiffButton.UseVisualStyleBackColor = true;
+            this.timeDiffButton.Click += new System.EventHandler(this.timeDiffButton_Click);
+            // 
             // CampaignViewer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(458, 420);
+            this.Controls.Add(this.timeDiffButton);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.editNoteButton);
             this.Controls.Add(this.deleteNoteButton);
@@ -339,5 +351,6 @@
         private System.Windows.Forms.ToolStripMenuItem activateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem expandChildrenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem collapseChildrenToolStripMenuItem;
+        private System.Windows.Forms.Button timeDiffButton;
     }
 }

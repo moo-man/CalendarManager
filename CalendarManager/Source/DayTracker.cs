@@ -89,7 +89,7 @@ namespace CalendarManager
                 currentCalendar.activeCampaign.setCurrentDate(currentCalendar.calendar.ToString());
             }
 
-            currentDate.Text = currentCalendar.calendar.returnConciseDate();
+            currentDate.Text = currentCalendar.calendar.returnCurrentDateWithWeekday();
 
             displayMoons();
             DetermineTimerButtonVisibility();
@@ -279,9 +279,9 @@ namespace CalendarManager
                     }
                     else if (CalendarType.FarthestInTime(t.returnDateString(), currentCalendar.calendar.ToString()) < 0)
                     {
-                        if (MessageBox.Show(this, t.message + " (" + CalendarType.returnGivenDate(t.returnDateString()) + ")" + "\n\nCreate a note?", "Timer Passed", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                        if (MessageBox.Show(this, t.message + " (" + CalendarType.returnGivenDateWithWeekday(t.returnDateString()) + ")" + "\n\nCreate a note?", "Timer Passed", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                             new EditNotesDialog(new Note(t.returnDateString(), AlertScope.campaign, t.message, currentCalendar.activeCampaign), currentCalendar).ShowDialog(this);
-                        if (MessageBox.Show(this, "Go to date? (" + CalendarType.returnGivenDate(t.returnDateString()) + ")", "Go to date", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        if (MessageBox.Show(this, "Go to date? (" + CalendarType.returnGivenDateWithWeekday(t.returnDateString()) + ")", "Go to date", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                             currentCalendar.calendar.setDate(t.returnDateString());
                         // Remove, then restart updating (can't remove and iterate)
                         currentCalendar.activeCampaign.timers.Remove(t);

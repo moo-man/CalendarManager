@@ -14,6 +14,8 @@ namespace CalendarManager
     {
         Calendar currentCalendar;
         List<string> expandedNodes;
+        TimeDifference timeDiffTool;
+        bool measuring;
 
         public CampaignViewer(Calendar cal)
         {
@@ -21,7 +23,21 @@ namespace CalendarManager
             currentCalendar = cal;
             activateToolTip.SetToolTip(makeActiveButton, "Activate a campaign to use it in the Day Tracker");
             campaignTree.ContextMenuStrip = campaignContextMenu;
+
+            timeDiffTool = new TimeDifference();
+            measuring = false;
+            timeDiffTool.VisibleChanged += CheckIfMeasuring;
         }
+
+
+        private void CheckIfMeasuring(object sender, EventArgs e)
+        {
+            if (timeDiffTool.Visible)
+                measuring = true;
+            else
+                measuring = false;
+        }
+
 
         public void UpdateTree()
         {
@@ -68,7 +84,7 @@ namespace CalendarManager
             }
             else
             {
-                campaignTree.Nodes[campNum].Nodes.Add(new TreeNode(CalendarType.returnGivenDate(noteToAdd.Date))); // ADD DATE OF NOTE
+                campaignTree.Nodes[campNum].Nodes.Add(new TreeNode(CalendarType.returnConciseGivenDate(noteToAdd.Date))); // ADD DATE OF NOTE
                 campaignTree.Nodes[campNum].Nodes[noteNum].Nodes.Add(new TreeNode(noteToAdd.NoteContent));         // ADD NOTE CONTENT UNDER IT
                 noteNum++;
             }
@@ -128,7 +144,7 @@ namespace CalendarManager
         {
             foreach (TreeNode n in nodes)
             {
-                if (n.Text == CalendarType.returnGivenDate(dateString))
+                if (n.Text == CalendarType.returnGivenDateWithWeekday(dateString))
                     return n;
             }
             return null;
@@ -353,6 +369,26 @@ namespace CalendarManager
             campaignTree.SelectedNode = campaignTree.GetNodeAt(e.X, e.Y);
             if (e.Button == MouseButtons.Right)
                 DetermineTreeContextMenu(campaignTree.SelectedNode);
+
+            if (measuring)
+            {
+                switch (campaignTree.SelectedNode.Level)
+                {
+                    case 0: // Take the name of the selected node (which is the campaign name), find the current date of that campaign
+                        timeDiffTool.GiveDate(currentCalendar.CampaignList.Find(x => x.Name.Equals(parseCampaignName(campaignTree.SelectedNode.Text))).CurrentDate);
+                        break;
+                    case 1: //
+                        timeDiffTool.GiveDate(CalendarType.ReturnGivenDateFromName(campaignTree.SelectedNode.Text));
+                        break;
+                    case 2:
+                        timeDiffTool.GiveDate(
+                            currentCalendar.CampaignList.Find(
+                                x => x.Name.Equals(
+                                    parseCampaignName( // take the node's parent's parent, which is the campaign name. Find the note in that campaign, give date to timedifftool
+                                        campaignTree.SelectedNode.Parent.Parent.Text))).findNote(campaignTree.SelectedNode.Text).Date);
+                        break;
+                }
+            }
         }
 
         private void DetermineTreeContextMenu(TreeNode selectedNode)
@@ -425,11 +461,9 @@ namespace CalendarManager
                 campaignTree.CollapseAll();
         }
 
-        private void campaignTree_MouseDown_1(object sender, MouseEventArgs e)
+        private void timeDiffButton_Click(object sender, EventArgs e)
         {
-            campaignTree.SelectedNode = campaignTree.GetNodeAt(e.X, e.Y);
-            if (e.Button == MouseButtons.Right)
-                DetermineTreeContextMenu(campaignTree.SelectedNode);
+            timeDiffTool.Show();
         }
     }
 }
