@@ -144,7 +144,7 @@ namespace CalendarManager
         {
             foreach (TreeNode n in nodes)
             {
-                if (n.Text == CalendarType.returnGivenDateWithWeekday(dateString))
+                if (n.Text == CalendarType.returnConciseGivenDate(dateString))
                     return n;
             }
             return null;
